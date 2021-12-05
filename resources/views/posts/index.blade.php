@@ -1,8 +1,8 @@
 <x-layout>
     @include('components.header')
-    <main>
+    <x-container>
         @if($posts->count())
-            <x-feature_post :post="$posts[0]" />
+            <x-feature-post :post="$posts[0]" />
         @else
             <p class="text-center">No post found</p>
         @endif
@@ -16,5 +16,5 @@
                 {{$posts->links()}}
             </div>
         @endif
-    </main>
+    </x-container>
 </x-layout>

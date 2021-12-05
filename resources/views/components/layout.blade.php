@@ -5,9 +5,8 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"/>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body style="font-family: Open Sans, sans-serif">
@@ -21,12 +20,32 @@
 
         <div class="mt-8 md:mt-0 flex items-center">
             @auth
-                <span class="font-semibold mr-2">Wellcome, {{ auth()->user()->name}}</span>
-                |
-                <form action="/logout" method="post">
-                    @csrf
-                    <button type="submit" class="text-xs font-bold uppercase ml-2">Logout</button>
-                </form>
+                <div class="relative lg:inline-flex">
+                    <x-dropdown title="Welcome, {{ auth()->user()->name}}">
+
+                        @admin
+                            <x-dropdown.item
+                                title="Dashboard" link="/admin/posts"
+                                active="{{request()->is('admin/posts')}}"/>
+
+                            <x-dropdown.item
+                                title="Create new post" link="/admin/posts/create"
+                                active="{{request()->is('admin/posts/create')}}"/>
+                        @endadmin
+
+                        <x-dropdown.item
+                            title="Logout"
+                            link="#"
+                            x-data="{}"
+                            @click.prevent="document.querySelector('#logout').submit()"
+                        />
+
+                        <form id="logout" action="/logout" method="POST" class="hidden">
+                            @csrf
+                        </form>
+                    </x-dropdown>
+                </div>
+
             @else
                 <a href="/register" class="font-semibold mr-2">Register</a>
                 |
