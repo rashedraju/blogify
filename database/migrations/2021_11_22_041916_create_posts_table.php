@@ -4,27 +4,26 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
-{
+class CreatePostsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('posts', function (Blueprint $table) {
+    public function up() {
+        Schema::create( 'posts', function ( Blueprint $table ) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string("title");
-            $table->text("slug")->unique();
-            $table->string('thumbnail')->nullable();
-            $table->text("excerpt");
-            $table->foreignId('category_id');
-            $table->text("body");
+            $table->foreignId( 'user_id' )->constrained()->cascadeOnDelete();
+            $table->string( "title" );
+            $table->text( "slug" )->unique();
+            $table->string( 'thumbnail' )->nullable();
+            $table->text( "excerpt" );
+            $table->foreignId( 'category_id' );
+            $table->foreignId( 'status_id' )->default('1');
+            $table->text( "body" );
             $table->timestamps();
-            $table->timestamp('published_at')->nullable();
-        });
+            $table->timestamp( 'published_at' )->nullable();
+        } );
     }
 
     /**
@@ -32,8 +31,7 @@ class CreatePostsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('posts');
+    public function down() {
+        Schema::dropIfExists( 'posts' );
     }
 }

@@ -1,5 +1,11 @@
 <x-dashboard>
     <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th colspan="2">Actions</th>
+        </thead>
         <tbody class="bg-white divide-y divide-gray-200">
         @foreach($posts as $post)
             <tr>
@@ -9,10 +15,16 @@
                         {{$post->title}}
                     </a>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <a href="/?author={{ $post->author->username }}"
+                       class="hover:text-blue-500">
+                        {{$post->author->name}}
+                    </a>
+                </td>
+                <td class="px-6 py-4 text-center whitespace-nowrap">
                     <span
                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-500 text-white">
-                      Published
+                        {{ ucfirst($post->status->name ?? "") }}
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

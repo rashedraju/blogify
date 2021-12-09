@@ -5,6 +5,13 @@
         @method('patch')
 
         <x-form.input name="title" value="{{$post->title}}" />
+
+        <x-form.select label="Author" name="author_id">
+            @foreach (App\Models\User::authors() as $author)
+                <x-form.select.option :option="$author" selected="{{ $post->author->id == old('author_id', $author->id) }}"/>
+            @endforeach
+        </x-form.select>
+
         <x-form.input name="slug" value="{{$post->slug}}" />
 
         <x-form.input name="thumbnail" type="file" value="{{old('thumbnail', $post->thumbnail)}}" />
@@ -14,18 +21,21 @@
             {{$post->excerpt}}
         </x-form.textarea>
 
+        <x-form.select label="Status" name="status_id">
+            @foreach (App\Models\Status::all() as $status)
+                <x-form.select.option :option="$status" selected="{{ $post->status->id == old('status_id', $status->id) }}"/>
+            @endforeach
+        </x-form.select>
+
+        <x-form.select label="Category" name="category_id">
+            @foreach (App\Models\Category::all() as $category)
+                <x-form.select.option :option="$category" selected="{{ $category->id == old('category_id', $post->category->id) }}"/>
+            @endforeach
+        </x-form.select>
+
         <x-form.textarea name="body">
             {{$post->body}}
         </x-form.textarea>
-
-        <x-form.label name="category"/>
-        <select name="category_id" id=""
-                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5">
-            @foreach(App\Models\Category::all() as $category)
-                <option
-                    value="{{$category->id}}" {{$category->id == old('$category', $post->category->id) ? 'selected' : ''}}>{{ucwords($category->name)}}</option>
-            @endforeach
-        </select>
 
         <x-submit-button class="mt-5">Update</x-submit-button>
     </form>

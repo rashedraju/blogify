@@ -9,14 +9,17 @@
         <x-form.textarea name="excerpt"> {{old('excerpt')}} </x-form.textarea>
         <x-form.textarea name="body"> {{old('body')}} </x-form.textarea>
 
-        <x-form.label name="category"/>
-        <select name="category_id" id=""
-                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5">
-            @foreach(App\Models\Category::all() as $category)
-                <option
-                    value="{{$category->id}}" {{$category->id == old('$category') ? 'selected' : ''}}>{{ucwords($category->name)}}</option>
+        <x-form.select label="Status" name="status_id">
+            @foreach (App\Models\Status::all() as $status)
+                <x-form.select.option :option="$status" selected="{{ $status->id == old('status_id') }}"/>
             @endforeach
-        </select>
+        </x-form.select>
+
+        <x-form.select label="Category" name="category_id">
+            @foreach (App\Models\Category::all() as $category)
+                <x-form.select.option :option="$category" selected="{{ $category->id == old('category_id') }}"/>
+            @endforeach
+        </x-form.select>
 
         <x-submit-button class="mt-5">Post</x-submit-button>
     </form>

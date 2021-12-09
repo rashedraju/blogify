@@ -49,7 +49,13 @@ class AdminPostsController extends Controller
             $attributes['thumbnail'] = $path;
         }
 
-        $attributes['user_id'] = auth()->user()->id;
+        if($attributes['author_id']){
+            $attributes = array_merge([
+                'user_id' => $attributes['author_id'] ?? auth()->user()->id,
+            ], $attributes);
+
+            unset($attributes['author_id']);
+        }
 
         $post->update($attributes);
 
@@ -68,10 +74,12 @@ class AdminPostsController extends Controller
         $post ??= new Post();
         return request()->validate([
             'title' => 'required',
+            'author_id' => Rule::exists('users', 'id'),
             'slug' => ['required', Rule::unique('posts', 'slug')->ignore($post)],
             'thumbnail' => $post->exists ? 'image' : 'required|image',
             'excerpt' => 'required',
             'category_id' => ['required', Rule::exists('categories', 'id')],
+            'status_id' => Rule::exists('statuses', 'id'),
             'body' => 'required'
         ]);
     }
