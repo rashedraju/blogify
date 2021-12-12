@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Services\VisibilityService;
 
 class RegisterController extends Controller
 {
+    public function __construct(VisibilityService $visibilityService)
+    {
+        $this->visibilityService = $visibilityService;
+    }
+
     public function create(){
         return view('register.create');
     }
@@ -21,6 +26,7 @@ class RegisterController extends Controller
         ]);
 
         $user = User::create($attributes);
+        $this->visibilityService->create($user);
 
         auth()->login($user);
 

@@ -34,6 +34,12 @@
                         @endadmin
 
                         <x-dropdown.item
+                            title="Profile"
+                            link="/{{ auth()->user()->username }}/profile"
+                            x-data="{}"
+                        />
+
+                        <x-dropdown.item
                             title="Logout"
                             link="#"
                             x-data="{}"

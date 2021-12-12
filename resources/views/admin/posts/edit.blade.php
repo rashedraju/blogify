@@ -1,4 +1,4 @@
-<x-dashboard>
+<x-dashboard.admin>
     <form action="/admin/posts/{{$post->id}}" method="POST"
           enctype="multipart/form-data">
         @csrf
@@ -37,6 +37,6 @@
             {{$post->body}}
         </x-form.textarea>
 
-        <x-submit-button class="mt-5">Update</x-submit-button>
+        <x-button.submit class="mt-5">Update</x-button.submit>
     </form>
-</x-dashboard>
+</x-dashboard.admin>

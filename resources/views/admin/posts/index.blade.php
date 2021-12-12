@@ -1,4 +1,4 @@
-<x-dashboard>
+<x-dashboard.admin>
     <table class="min-w-full divide-y divide-gray-200">
         <thead>
             <th>Title</th>
@@ -42,4 +42,4 @@
         @endforeach
         </tbody>
     </table>
-</x-dashboard>
+</x-dashboard.admin>

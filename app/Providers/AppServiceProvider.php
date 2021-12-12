@@ -3,14 +3,14 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Services\MailchimpNewsletter;
 use App\Services\Newsletter;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
 use MailchimpMarketing\ApiClient;
+use App\Services\VisibilityService;
+use Illuminate\Support\Facades\Gate;
+use App\Services\MailchimpNewsletter;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
 
             return new MailchimpNewsletter($client);
         });
+
+        app()->bind(VisibilityService::class, function(){
+            return new VisibilityService();
+        });
     }
 
     /**
@@ -44,8 +48,29 @@ class AppServiceProvider extends ServiceProvider
             return auth()->user() && auth()->user()->is_admin;
         });
 
+
+        Gate::define('user', function(){
+            return auth()->user() && !auth()->user()->is_admin;
+        });
+
+        Gate::define('self', function(){
+            return auth()->user() && auth()->user()->username == request()->segment(1);
+        });
+
+        Gate::define('visibility', function($user, string $visibilityFor){
+            return $user->visibilities[$visibilityFor];
+        });
+
         Blade::if('admin', function () {
             return auth()->user() && auth()->user()->is_admin;
+        });
+
+        Blade::if('user', function(){
+            return auth()->user() && !auth()->user()->is_admin;
+        });
+
+        Blade::if('self', function(){
+            return auth()->user() && auth()->user()->username == request()->segment(1);
         });
     }
 }

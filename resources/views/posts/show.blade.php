@@ -4,18 +4,42 @@
             <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
                 <img src="{{asset('storage/' . $post->thumbnail)}}" alt="" class="rounded-xl">
 
-                <p class="mt-4 block text-gray-400 text-xs">
-                    Published
-                    <time>{{$post->created_at->diffForHumans()}}</time>
-                </p>
+                <div class="flex items-center gap-2">
+                    <span class="mt-2 block text-gray-400 text-xs">
+                        <time>{{$post->views}} Views</time>
+                    </span>
+                    <span class="text-gray-500"> . </span>
+                    <span class="mt-2 block text-gray-400 text-xs">
+                        Published <time>{{$post->created_at->diffForHumans()}}</time>
+                    </span>
+                </div>
 
-                <div class="flex items-center lg:justify-center text-sm mt-4">
-                    <img src="/images/lary-avatar.svg" alt="Lary avatar">
-                    <div class="ml-3 text-left">
-                        <a href="/?author={{$post->author->username}}">
-                            <h5 class="font-bold">{{$post->author->name}}</h5>
-                        </a>
+                <div class="flex items-center lg:justify-between text-sm mt-4">
+                    <div class="flex items-center">
+                        <img src="/images/lary-avatar.svg" alt="Lary avatar">
+                        <div class="ml-3 text-left">
+                            <a href="/?author={{$post->author->username}}">
+                                <h5 class="font-bold">{{$post->author->name}}</h5>
+                            </a>
+                        </div>
                     </div>
+
+                    @if(auth()->user() && auth()->user()->id != $post->author->id)
+
+                        @if(auth()->user()->followings()->find($post->author->id))
+                            <form action="/{{ auth()->user()->username }}/followings/{{ $post->author->id }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="text-blue-500 font-semibold">Unfollow</button>
+                            </form>
+                        @else
+                            <form action="/{{ auth()->user()->username }}/followings/{{ $post->author->id }}" method="POST">
+                                @csrf
+                                <button type="submit" class="text-blue-500 font-semibold">Follow</button>
+                            </form>
+                        @endif
+
+                    @endif
                 </div>
             </div>
 
@@ -53,10 +77,10 @@
             </div>
             <section class="col-span-8 col-start-5 space-y-6 mt-10">
 
-                <x-post-comment-box :post="$post"/>
+                <x-comment.box :post="$post"/>
 
                 @foreach($post->comments as $comment)
-                    <x-post-comment :comment="$comment"/>
+                    <x-comment :comment="$comment"/>
                 @endforeach
             </section>
         </article>

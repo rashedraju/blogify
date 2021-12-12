@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\Newsletter;
 use Illuminate\Validation\Rule;
 
 class AdminPostsController extends Controller
@@ -19,7 +20,7 @@ class AdminPostsController extends Controller
         return view('admin.posts.create');
     }
 
-    public function store()
+    public function store(Newsletter $newsletter)
     {
         $attributes = $this->postValidate();
 
@@ -31,6 +32,9 @@ class AdminPostsController extends Controller
         ]);
 
         Post::create($attributes);
+
+        // Send newsletter to followers
+
 
         return redirect('admin/posts');
     }

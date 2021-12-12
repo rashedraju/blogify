@@ -9,7 +9,7 @@
             <x-form.input name="email" type="email" autocomplete="email"/>
             <x-form.input name="password" type="password" autocomplete="password"/>
 
-            <x-submit-button>Register</x-submit-button>
+            <x-button.submit>Register</x-button.submit>
         </form>
     </x-container>
 </x-layout>

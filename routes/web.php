@@ -1,34 +1,60 @@
 <?php
 
-use App\Http\Controllers\AdminPostsController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\FollowersController;
+use App\Http\Controllers\AdminPostsController;
+use App\Http\Controllers\FollowingsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostCommentsController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\SessionController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VisibilityController;
 
+// Post
 Route::get('/', [PostController::class, 'index']);
-
 Route::get('/posts/{post:slug}', [PostController::class, 'show']);
+Route::post('/posts/{post:slug}/comments', [PostCommentsController::class, 'store'])->middleware('auth');
 
 // Feed
 Route::get('/feed', [FeedController::class, 'feed']);
 
+// Newsletter
 Route::post('/newsletter', NewsletterController::class);
 
-Route::post('/posts/{post:slug}/comments', [PostCommentsController::class, 'store'])->middleware('auth');
+// Profile
+Route::get('/{user:username}/profile', [ProfileController::class, 'index']);
+Route::get('/{user:username}/followings', [FollowingsController::class, 'index']);
+Route::get('/{user:username}/followers', [FollowersController::class, 'index']);
 
-Route::get("/register", [RegisterController::class, 'create'])->middleware('guest');
-Route::post("/register", [RegisterController::class, 'store'])->middleware('guest');
+Route::middleware('can:self')->group(function(){
+    Route::get('/{user:username}/visibilities', [VisibilityController::class, 'index']);
+    Route::put('/{user:username}/visibilities', [VisibilityController::class, 'update']);
 
-Route::get("/login", [SessionController::class, 'create'])->middleware('guest');
-Route::post("/login", [SessionController::class, 'store'])->middleware('guest');
+    // Followings
+    Route::post('/{user:username}/followings/{id}', [FollowingsController::class, 'follow']);
+    Route::delete('/{user:username}/followings/{id}', [FollowingsController::class, 'unfollow']);
 
-Route::post("/logout", [SessionController::class, 'destroy'])->middleware('auth');
+    // Followers
+    Route::delete('/{user:username}/followers/{id}', [FollowersController::class, 'remove']);
 
-// admin
+});
+
+// Register
+Route::middleware('guest')->group(function(){
+    Route::get("/register", [RegisterController::class, 'create']);
+    Route::post("/register", [RegisterController::class, 'store']);
+
+    // Session
+    Route::get("/login", [SessionController::class, 'create']);
+    Route::post("/login", [SessionController::class, 'store']);
+});
+
+Route::post("/logout", [SessionController::class, 'destroy']);
+
+// Admin
 Route::middleware('can:admin')->group(function(){
     Route::resource('/admin/posts', AdminPostsController::class)->except('show');
 });

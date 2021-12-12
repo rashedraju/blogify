@@ -1,4 +1,4 @@
-<x-dashboard>
+<x-dashboard.admin>
     <form action="/admin/posts" method="post"
           enctype="multipart/form-data">
         @csrf
@@ -21,6 +21,6 @@
             @endforeach
         </x-form.select>
 
-        <x-submit-button class="mt-5">Post</x-submit-button>
+        <x-button.submit class="mt-5">Post</x-button.submit>
     </form>
-</x-dashboard>
+</x-dashboard.admin>

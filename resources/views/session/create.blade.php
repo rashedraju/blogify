@@ -7,7 +7,7 @@
             <x-form.input name="email" type="email"/>
             <x-form.input name="password" type="password"/>
 
-            <x-submit-button>Login</x-submit-button>
+            <x-button.submit>Login</x-button.submit>
         </form>
     </x-container>
 </x-layout>

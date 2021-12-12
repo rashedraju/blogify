@@ -16,6 +16,8 @@ class PostController extends Controller {
     }
 
     public function show( Post $post ) {
+        $post->increment('views', 1);
+
         return view( 'posts.show', ['post' => $post] );
     }
 }
