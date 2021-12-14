@@ -12,6 +12,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public static function boot(){
+        parent::boot();
+
+        static::created(function($user){
+            $user->visibilities()->create(['user_id' => $user->id]);
+        });
+    }
+
     public static function authors(){
         return User::where('is_admin', '1')->get();
     }

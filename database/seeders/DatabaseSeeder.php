@@ -41,8 +41,6 @@ class DatabaseSeeder extends Seeder
 
         $john->followers()->attach(User::factory(5)->create());
         $jane->followings()->attach(User::factory(5)->create());
-
-        Visibility::factory()->create(['user_id' => $jane->id]);
     }
 
 }

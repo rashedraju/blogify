@@ -10,8 +10,8 @@ use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\FollowingsController;
 use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\VisibilityController;
+use App\Http\Controllers\PostCommentsController;
 
 // Post
 Route::get('/', [PostController::class, 'index']);
@@ -58,3 +58,4 @@ Route::post("/logout", [SessionController::class, 'destroy']);
 Route::middleware('can:admin')->group(function(){
     Route::resource('/admin/posts', AdminPostsController::class)->except('show');
 });
+

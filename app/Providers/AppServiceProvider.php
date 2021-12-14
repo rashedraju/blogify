@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Services\Newsletter;
+use App\Services\PostService;
+use App\Services\SessionService;
+use App\Services\RegisterService;
 use MailchimpMarketing\ApiClient;
 use App\Services\VisibilityService;
 use Illuminate\Support\Facades\Gate;
 use App\Services\MailchimpNewsletter;
-use Illuminate\Support\Facades\Blade;
+use App\Services\PostCommentsService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,9 +32,11 @@ class AppServiceProvider extends ServiceProvider
             return new MailchimpNewsletter($client);
         });
 
-        app()->bind(VisibilityService::class, function(){
-            return new VisibilityService();
-        });
+        app()->bind(VisibilityService::class, fn() => new VisibilityService());
+        app()->bind(PostService::class, fn() => new PostService);
+        app()->bind(PostCommentsService::class, fn() => new PostCommentsService);
+        app()->bind(RegisterService::class, fn() => new RegisterService(new VisibilityService));
+        app()->bind(SessionService::class, fn() => new SessionService);
     }
 
     /**
@@ -44,33 +48,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        Gate::define('admin', function () {
-            return auth()->user() && auth()->user()->is_admin;
-        });
-
-
-        Gate::define('user', function(){
-            return auth()->user() && !auth()->user()->is_admin;
-        });
-
-        Gate::define('self', function(){
-            return auth()->user() && auth()->user()->username == request()->segment(1);
-        });
-
         Gate::define('visibility', function($user, string $visibilityFor){
             return $user->visibilities[$visibilityFor];
-        });
-
-        Blade::if('admin', function () {
-            return auth()->user() && auth()->user()->is_admin;
-        });
-
-        Blade::if('user', function(){
-            return auth()->user() && !auth()->user()->is_admin;
-        });
-
-        Blade::if('self', function(){
-            return auth()->user() && auth()->user()->username == request()->segment(1);
         });
     }
 }

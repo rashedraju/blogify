@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,29 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('admin', function () {
+            return auth()->user() && auth()->user()->is_admin;
+        });
+
+
+        Gate::define('user', function(){
+            return auth()->user() && !auth()->user()->is_admin;
+        });
+
+        Gate::define('self', function(){
+            return auth()->user() && auth()->user()->username == request()->segment(1);
+        });
+
+        Blade::if('admin', function () {
+            return auth()->user() && auth()->user()->is_admin;
+        });
+
+        Blade::if('user', function(){
+            return auth()->user() && !auth()->user()->is_admin;
+        });
+
+        Blade::if('self', function(){
+            return auth()->user() && auth()->user()->username == request()->segment(1);
+        });
     }
 }

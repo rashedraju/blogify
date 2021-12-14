@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Validation\Rule;
-use App\Services\VisibilityService;
+use App\Services\RegisterService;
 
 class RegisterController extends Controller
 {
-    public function __construct(VisibilityService $visibilityService)
+    protected $registerService;
+
+    public function __construct(RegisterService $registerService)
     {
-        $this->visibilityService = $visibilityService;
+        $this->registerService = $registerService;
     }
 
     public function create(){
@@ -18,18 +18,8 @@ class RegisterController extends Controller
     }
 
     public function store(){
-        $attributes = request()->validate([
-           'name' => ['required', 'min:6', 'max:255'],
-           "username" => ['required', 'min:6', 'max:255', Rule::unique('users', 'username')],
-           'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
-           'password' => ['required', 'min:6', 'max:255']
-        ]);
+        $this->registerService->createUser();
 
-        $user = User::create($attributes);
-        $this->visibilityService->create($user);
-
-        auth()->login($user);
-
-        return redirect('/')->with('success', 'Your account has been created');
+        return redirect( '/' )->with( 'success', 'Your account has been created' );
     }
 }

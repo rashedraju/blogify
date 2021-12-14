@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Services\Newsletter;
-use Illuminate\Validation\Rule;
+use App\Services\AdminPostService;
 
 class AdminPostsController extends Controller
 {
+    protected $adminPostService;
+
+    public function __construct(AdminPostService $adminPostService)
+    {
+        $this->adminPostService = $adminPostService;
+    }
+
     public function index()
     {
-        return view('admin.posts.index', [
-            'posts' => Post::all()
-        ]);
+        return view('admin.posts.index', ['posts' => Post::all()]);
     }
 
     public function create()
@@ -20,21 +24,9 @@ class AdminPostsController extends Controller
         return view('admin.posts.create');
     }
 
-    public function store(Newsletter $newsletter)
+    public function store()
     {
-        $attributes = $this->postValidate();
-
-        $path = request()->file('thumbnail')->store('thumbnails');
-
-        $attributes = array_merge($attributes, [
-            'user_id' => auth()->user()->id,
-            'thumbnail' => $path
-        ]);
-
-        Post::create($attributes);
-
-        // Send newsletter to followers
-
+        $this->adminPostService->createPost();
 
         return redirect('admin/posts');
     }
@@ -46,22 +38,7 @@ class AdminPostsController extends Controller
 
     public function update(Post $post)
     {
-        $attributes = $this->postValidate($post);
-
-        if (request('thumbnail')) {
-            $path = request()->file('thumbnail')->store('thumbnails');
-            $attributes['thumbnail'] = $path;
-        }
-
-        if($attributes['author_id']){
-            $attributes = array_merge([
-                'user_id' => $attributes['author_id'] ?? auth()->user()->id,
-            ], $attributes);
-
-            unset($attributes['author_id']);
-        }
-
-        $post->update($attributes);
+        $this->adminPostService->updatePost($post);
 
         return redirect('admin/posts')->with('success', 'Post updated');
     }
@@ -71,20 +48,5 @@ class AdminPostsController extends Controller
         $post->delete();
 
         return redirect()->back()->with('success', 'Post updated');
-    }
-
-    protected function postValidate(?Post $post = null): array
-    {
-        $post ??= new Post();
-        return request()->validate([
-            'title' => 'required',
-            'author_id' => Rule::exists('users', 'id'),
-            'slug' => ['required', Rule::unique('posts', 'slug')->ignore($post)],
-            'thumbnail' => $post->exists ? 'image' : 'required|image',
-            'excerpt' => 'required',
-            'category_id' => ['required', Rule::exists('categories', 'id')],
-            'status_id' => Rule::exists('statuses', 'id'),
-            'body' => 'required'
-        ]);
     }
 }

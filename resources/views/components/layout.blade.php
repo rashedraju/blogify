@@ -13,8 +13,8 @@
 <section class="px-6 py-8">
     <nav class="md:flex md:justify-between md:items-center">
         <div>
-            <a href="/">
-                <img src="/images/logo.svg" alt="Laracasts Logo" width="165" height="16">
+            <a href="/" class="text-4xl mb-5 text-blue-500 font-semibold">
+                Laracasts-blog
             </a>
         </div>
 

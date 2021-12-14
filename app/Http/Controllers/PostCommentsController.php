@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\PostCommentsService;
 
 class PostCommentsController extends Controller
 {
-    public function store(Post $post ){
-        // validate
-        request()->validate([
-            'body' => 'required'
-        ]);
+    protected $postCommentsService;
 
-        // create comment
-        $post->comments()->create([
-            'user_id' => auth()->user()->id,
-            'body' => request('body')
-        ]);
+    public function __construct(PostCommentsService $postCommentsService)
+    {
+        $this->postCommentsService = $postCommentsService;
+    }
+
+    public function store(Post $post ){
+        $this->postCommentsService->createComment($post);
 
         return back();
     }

@@ -3,19 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\PostService;
 
 class PostController extends Controller {
-    public function index() {
-        $posts = Post::latest()->filter(
-            array_merge( ['status' => 'published'], request( ['search', 'categories', 'author'] ) )
-        )->paginate( 10 );
+    protected $postService;
 
-        return view( 'posts.index', [
-            'posts' => $posts
-        ] );
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
     }
 
-    public function show( Post $post ) {
+    public function index() {
+        $posts =  $this->postService->index();
+
+        return view( 'posts.index', ['posts' => $posts] );
+    }
+
+    public function show(Post $post) {
         $post->increment('views', 1);
 
         return view( 'posts.show', ['post' => $post] );

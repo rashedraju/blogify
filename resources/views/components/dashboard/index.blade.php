@@ -8,25 +8,14 @@
                         @foreach ($actions as $action)
                             <li class="my-2">
                                 <a href="/{{ $action['link'] }}"
-                                class="{{ request()->is($action['link']) ? 'text-blue-500' : ''}} hover:text-blue-500">{{ $action['title'] }}</a>
+                                    class="{{ request()->is($action['link']) ? 'text-blue-500' : '' }} hover:text-blue-500">{{ $action['title'] }}</a>
                             </li>
                         @endforeach
-
-                        {{-- <li class="my-2">
-                            <a href="/admin/posts"
-                               class="{{request()->is('admin/posts') ? 'text-blue-500' : ''}} hover:text-blue-500">All
-                                posts</a>
-                        </li>
-                        <li class="my-2">
-                            <a href="/admin/posts/create"
-                               class="{{request()->is('admin/posts/create') ? 'text-blue-500' : ''}} hover:text-blue-500">Create
-                                new post</a>
-                        </li> --}}
                     </ul>
                 </aside>
             </div>
             <div class="flex flex-1 flex-col p-5 border rounded">
-                {{$slot}}
+                {{ $slot }}
             </div>
         </div>
     </x-container>
