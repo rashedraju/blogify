@@ -47,9 +47,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
-
-        Gate::define('visibility', function($user, string $visibilityFor){
-            return $user->visibilities[$visibilityFor];
-        });
     }
 }

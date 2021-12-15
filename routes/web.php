@@ -8,6 +8,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\AdminPostsController;
+use App\Http\Controllers\BookmarksController;
 use App\Http\Controllers\FollowingsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\VisibilityController;
@@ -28,6 +29,7 @@ Route::post('/newsletter', NewsletterController::class);
 Route::get('/{user:username}/profile', [ProfileController::class, 'index']);
 Route::get('/{user:username}/followings', [FollowingsController::class, 'index']);
 Route::get('/{user:username}/followers', [FollowersController::class, 'index']);
+Route::get('/{user:username}/bookmarks', [BookmarksController::class, 'index']);
 
 Route::middleware('can:self')->group(function(){
     Route::get('/{user:username}/visibilities', [VisibilityController::class, 'index']);
@@ -40,6 +42,9 @@ Route::middleware('can:self')->group(function(){
     // Followers
     Route::delete('/{user:username}/followers/{id}', [FollowersController::class, 'remove']);
 
+    // Bookmarks
+    Route::post('/{user:username}/bookmarks', [BookmarksController::class, 'create']);
+    Route::delete('/{user:username}/bookmarks/{bookmark}', [BookmarksController::class, 'destory']);
 });
 
 // Register

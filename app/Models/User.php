@@ -49,5 +49,9 @@ class User extends Authenticatable
     public function visibilities(){
         return $this->hasOne(Visibility::class, 'user_id');
     }
+
+    public function bookmarks(){
+        return $this->hasMany(Bookmark::class);
+    }
 }
 
