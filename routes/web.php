@@ -25,13 +25,15 @@ Route::get('/feed', [FeedController::class, 'feed']);
 // Newsletter
 Route::post('/newsletter', NewsletterController::class);
 
-// Profile
+// User Profile And Actions
 Route::get('/{user:username}/profile', [ProfileController::class, 'index']);
 Route::get('/{user:username}/followings', [FollowingsController::class, 'index']);
 Route::get('/{user:username}/followers', [FollowersController::class, 'index']);
 Route::get('/{user:username}/bookmarks', [BookmarksController::class, 'index']);
 
 Route::middleware('can:self')->group(function(){
+    Route::patch('/{user:username}/profile/edit', [ProfileController::class, 'update']);
+
     Route::get('/{user:username}/visibilities', [VisibilityController::class, 'index']);
     Route::put('/{user:username}/visibilities', [VisibilityController::class, 'update']);
 
