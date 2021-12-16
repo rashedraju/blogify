@@ -23,6 +23,6 @@ class VisibilityController extends Controller
 
         $user->visibilities->update($attributes);
 
-        return redirect()->back();
+        return back();
     }
 }

@@ -2,38 +2,32 @@
 
 namespace App\Providers;
 
-use App\Models\Post;
-use App\Models\User;
+use App\Services\MailchimpNewsletter;
 use App\Services\Newsletter;
 use App\Services\PostService;
-use App\Observers\PostObserver;
-use App\Observers\UserObserver;
-use MailchimpMarketing\ApiClient;
 use App\Services\VisibilityService;
-use App\Services\MailchimpNewsletter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use MailchimpMarketing\ApiClient;
 
-class AppServiceProvider extends ServiceProvider
-{
+class AppServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
      *
      * @return void
      */
-    public function register()
-    {
-        app()->bind(Newsletter::class, function () {
-            $client = (new ApiClient())->setConfig([
-                'apiKey' => config('services.mailchimp.key'),
+    public function register() {
+        app()->bind( Newsletter::class, function () {
+            $client = ( new ApiClient() )->setConfig( [
+                'apiKey' => config( 'services.mailchimp.key' ),
                 'server' => 'us20'
-            ]);
+            ] );
 
-            return new MailchimpNewsletter($client);
-        });
+            return new MailchimpNewsletter( $client );
+        } );
 
-        app()->bind(VisibilityService::class, fn() => new VisibilityService());
-        app()->bind(PostService::class, fn() => new PostService());
+        app()->bind( VisibilityService::class, fn() => new VisibilityService() );
+        app()->bind( PostService::class, fn() => new PostService() );
     }
 
     /**
@@ -41,12 +35,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         Model::unguard();
-
-        // Observers
-        Post::observe(PostObserver::class);
-        User::observe(UserObserver::class);
     }
 }

@@ -17,7 +17,7 @@ class NewsletterController extends Controller
             throw ValidationException::withMessages(['email' => 'Can\'t added the email address to newsletter']);
         }
 
-        return redirect('/')->with('success', 'You\'re subscribed to our newsletter.');
+        return redirect()->route('home')->with('success', 'You\'re subscribed to our newsletter.');
     }
 }
 

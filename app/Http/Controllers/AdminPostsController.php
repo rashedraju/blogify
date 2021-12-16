@@ -34,7 +34,7 @@ class AdminPostsController extends Controller
 
         Post::create($attributes);
 
-        return redirect('admin/posts');
+        return redirect()->route('admin.posts.index')->with('success', 'Post is successfully created');
     }
 
     public function edit(Post $post)
@@ -56,7 +56,7 @@ class AdminPostsController extends Controller
 
         $post->update($attributes);
 
-        return redirect('admin/posts')->with('success', 'Post updated');
+        return redirect()->route('admin.posts.index')->with('success', 'Post updated');
     }
 
     public function destroy(Post $post)

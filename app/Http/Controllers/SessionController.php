@@ -16,12 +16,12 @@ class SessionController extends Controller
             throw ValidationException::withMessages( ['email' => 'email did not match'] );
         }
 
-        return redirect( '/' )->with( 'Welcome back' );
+        return redirect()->route('home')->with( 'Welcome back' );
     }
 
     public function destroy(){
         auth()->logout();
 
-        return redirect('/')->with('success', 'Goodbye');
+        return redirect()->route('home')->with('success', 'Goodbye');
     }
 }

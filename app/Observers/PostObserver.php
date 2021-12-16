@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Jobs\NewPostNotificationJob;
+use App\Jobs\NewPostJob;
 use App\Models\Post;
 
 class PostObserver
@@ -15,7 +15,7 @@ class PostObserver
      */
     public function created(Post $post)
     {
-        dispatch(new NewPostNotificationJob($post));
+        dispatch(new NewPostJob($post));
     }
 
     /**

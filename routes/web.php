@@ -15,8 +15,8 @@ use App\Http\Controllers\VisibilityController;
 use App\Http\Controllers\PostCommentsController;
 
 // Post
-Route::get('/', [PostController::class, 'index']);
-Route::get('/posts/{post:slug}', [PostController::class, 'show']);
+Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post.show');
 Route::post('/posts/{post:slug}/comments', [PostCommentsController::class, 'store'])->middleware('auth');
 
 // Feed
@@ -62,7 +62,6 @@ Route::middleware('guest')->group(function(){
 Route::post("/logout", [SessionController::class, 'destroy'])->middleware('auth');
 
 // Admin
-Route::middleware('can:admin')->group(function(){
-    Route::resource('/admin/posts', AdminPostsController::class)->except('show');
-});
+
+Route::resource('/admin/posts', AdminPostsController::class, ['as' => 'admin'])->except('show')->middleware('can:admin');
 
