@@ -2,15 +2,11 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RegisterSuccessNotification extends Notification implements ShouldQueue
+class RegisterSuccessNotification extends Notification
 {
-    use Queueable;
-
     public array $details;
     /**
      * Create a new notification instance.

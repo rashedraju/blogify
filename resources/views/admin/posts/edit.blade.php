@@ -5,10 +5,10 @@
 
         <x-form.input name="title" value="{{ $post->title }}" />
 
-        <x-form.select label="Author" name="author_id">
+        <x-form.select label="Author" name="user_id">
             @foreach (App\Models\User::authors() as $author)
                 <x-form.select.option :option="$author"
-                    selected="{{ $post->author->id == old('author_id', $author->id) }}" />
+                    selected="{{ $post->author->id == old('user_id', $author->id) }}" />
             @endforeach
         </x-form.select>
 
@@ -24,7 +24,7 @@
         <x-form.select label="Status" name="status_id">
             @foreach (App\Models\Status::all() as $status)
                 <x-form.select.option :option="$status"
-                    selected="{{ $post->status->id == old('status_id', $status->id) }}" />
+                    :selected="old('status_id', $post->status->id) === $status->id" />
             @endforeach
         </x-form.select>
 

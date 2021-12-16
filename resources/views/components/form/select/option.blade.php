@@ -1,3 +1,5 @@
-@props(['option', 'selected' => false])
+@props(['option', 'selected' => true])
 
-<option value="{{ $option->id }}" {{ $selected && 'selected' }}>{{ ucfirst($option->name) }}</option>
+<option value="{{ $option->id }}" {{ $selected === true ? "selected" : "" }}>
+    {{ ucfirst($option->name) }}
+</option>

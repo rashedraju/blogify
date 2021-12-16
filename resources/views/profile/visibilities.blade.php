@@ -1,11 +1,14 @@
-<x-dashboard.user username="{{ $username }}">
+<x-dashboard.user username="{{ $user->username }}">
     <h2 class="font-semibold">Visibilities</h2>
 
-    <form method="POST" action="/{{ $username }}/visibilities">
+    <form method="POST" action="/{{ $user->username }}/visibilities">
         @csrf
         @method('PUT')
 
         <div class="min-w-full divide-y divide-gray-200">
+            @php
+                $visibilities = $user->visibilities->toArray();
+            @endphp
             @foreach($visibilities as $key => $value)
                 <div class="flex justify-between px-6 py-4 whitespace-nowrap">
                     <div>

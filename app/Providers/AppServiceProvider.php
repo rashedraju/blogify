@@ -2,15 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Models\User;
 use App\Services\Newsletter;
 use App\Services\PostService;
-use App\Services\SessionService;
-use App\Services\RegisterService;
+use App\Observers\PostObserver;
+use App\Observers\UserObserver;
 use MailchimpMarketing\ApiClient;
 use App\Services\VisibilityService;
-use Illuminate\Support\Facades\Gate;
 use App\Services\MailchimpNewsletter;
-use App\Services\PostCommentsService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,10 +33,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         app()->bind(VisibilityService::class, fn() => new VisibilityService());
-        app()->bind(PostService::class, fn() => new PostService);
-        app()->bind(PostCommentsService::class, fn() => new PostCommentsService);
-        app()->bind(RegisterService::class, fn() => new RegisterService(new VisibilityService));
-        app()->bind(SessionService::class, fn() => new SessionService);
+        app()->bind(PostService::class, fn() => new PostService());
     }
 
     /**
@@ -47,5 +44,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
+
+        // Observers
+        Post::observe(PostObserver::class);
+        User::observe(UserObserver::class);
     }
 }

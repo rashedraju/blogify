@@ -9,14 +9,7 @@ class VisibilityController extends Controller
 {
     public function index(User $user){
         return view('profile.visibilities', [
-            'username' => $user->username,
-            'visibilities' => [
-                'profile' => $user->visibilities->profile,
-                'bookmarks' => $user->visibilities->bookmarks,
-                'followings' => $user->visibilities->followings,
-                'followers' => $user->visibilities->followers,
-                'posts' => $user->visibilities->posts
-            ]
+            'user' => $user
         ]);
     }
 

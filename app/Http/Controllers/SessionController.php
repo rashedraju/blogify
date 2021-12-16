@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SessionService;
+use App\Http\Requests\SessionRequest;
+use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
-    protected $sessionService;
-
-    public function __construct(SessionService $sessionService)
-    {
-        $this->sessionService = $sessionService;
-    }
-
     public function create(){
         return view('session.create');
     }
 
-    public function store(){
-        $this->sessionService->login();
+    public function store(SessionRequest $request){
+        if ( !auth()->attempt( $request->validated() ) ) {
+            throw ValidationException::withMessages( ['email' => 'email did not match'] );
+        }
 
         return redirect( '/' )->with( 'Welcome back' );
     }

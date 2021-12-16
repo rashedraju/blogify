@@ -2,24 +2,24 @@
 
 namespace App\Notifications;
 
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
 
-class NewPostNotification extends Notification implements ShouldQueue
+class NewPostNotification extends Notification
 {
     use Queueable;
-    public array $details;
+    private $post;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(array $details)
+    public function __construct(Post $post)
     {
-        $this->details = $details;
+        $this->post = $post;
     }
 
     /**
@@ -41,7 +41,12 @@ class NewPostNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('mail.new-post', ['details' => $this->details]);
+        $details = [
+            'title' => $this->post->title,
+            'excerpt' => $this->post->excerpt,
+            'link' => url("/") . '/posts/' . $this->post->slug
+        ];
+        return (new MailMessage)->markdown('mail.new-post', ['details' => $details]);
     }
 
     /**
