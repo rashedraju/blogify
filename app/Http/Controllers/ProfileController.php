@@ -8,21 +8,17 @@ use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
-    protected $visibilityService;
-
-    public function __construct(VisibilityService $visibilityService)
-    {
-        $this->visibilityService = $visibilityService;
-    }
-
-    public function index(User $user){
+    public function show(User $user, VisibilityService $visibilityService){
         return view('profile.index', [
             'user' => $user,
-            'visibility' => $this->visibilityService->checkVisibility($user, 'profile')
+            'visibility' => $visibilityService->checkVisibility($user, 'profile')
         ]);
     }
 
     public function update(ProfileUpdateRequest $request, User $user){
+
+        $this->authorize('update', $user);
+
         $attribute = $request->validated();
 
         if($request->hasFile('image')){

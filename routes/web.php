@@ -17,7 +17,6 @@ use App\Http\Controllers\PostCommentsController;
 // Post
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post.show');
-Route::post('/posts/{post:slug}/comments', [PostCommentsController::class, 'store'])->middleware('auth');
 
 // Feed
 Route::get('/feed', [FeedController::class, 'feed']);
@@ -25,12 +24,13 @@ Route::get('/feed', [FeedController::class, 'feed']);
 // Newsletter
 Route::post('/newsletter', NewsletterController::class);
 
-// User Profile And Actions
-Route::get('/{user:username}/profile', [ProfileController::class, 'index']);
+// Profile
+Route::get('/{user:username}/profile', [ProfileController::class, 'show']);
 Route::get('/{user:username}/followings', [FollowingsController::class, 'index']);
 Route::get('/{user:username}/followers', [FollowersController::class, 'index']);
 Route::get('/{user:username}/bookmarks', [BookmarksController::class, 'index']);
 
+// Only For Current Logedin User
 Route::middleware('can:self')->group(function(){
     Route::patch('/{user:username}/profile/edit', [ProfileController::class, 'update']);
 
@@ -49,8 +49,15 @@ Route::middleware('can:self')->group(function(){
     Route::delete('/{user:username}/bookmarks/{bookmark}', [BookmarksController::class, 'destory']);
 });
 
-// Register
+// Authenticated User
+Route::middleware('auth')->group(function(){
+    Route::post('/posts/{post:slug}/comments', [PostCommentsController::class, 'store']);
+    Route::post("/logout", [SessionController::class, 'destroy']);
+});
+
+// Guest
 Route::middleware('guest')->group(function(){
+    // Register
     Route::get("/register", [RegisterController::class, 'create']);
     Route::post("/register", [RegisterController::class, 'store']);
 
@@ -59,9 +66,11 @@ Route::middleware('guest')->group(function(){
     Route::post("/login", [SessionController::class, 'store']);
 });
 
-Route::post("/logout", [SessionController::class, 'destroy'])->middleware('auth');
-
 // Admin
+Route::middleware('admin')->group(function(){
 
-Route::resource('/admin/posts', AdminPostsController::class, ['as' => 'admin'])->except('show')->middleware('can:admin');
+    Route::resource('/admin/posts', AdminPostsController::class, ['as' => 'admin'])->except('show');
+
+});
+
 

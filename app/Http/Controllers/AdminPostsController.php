@@ -7,7 +7,11 @@ use App\Models\Post;
 
 class AdminPostsController extends Controller
 {
-    protected $adminPostService;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class);
+    }
 
     public function index()
     {
@@ -39,11 +43,13 @@ class AdminPostsController extends Controller
 
     public function edit(Post $post)
     {
+
         return view('admin/posts/edit', ['post' => $post]);
     }
 
     public function update(AdminPostRequest $request, Post $post)
     {
+
         $attributes = $request->validated();
 
         if($request->hasFile('thumbnail')){

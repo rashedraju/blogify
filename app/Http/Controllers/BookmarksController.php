@@ -9,18 +9,12 @@ use App\Services\VisibilityService;
 
 class BookmarksController extends Controller
 {
-    protected $visibilityService;
 
-    public function __construct(VisibilityService $visibilityService)
-    {
-        $this->visibilityService = $visibilityService;
-    }
-
-    public function index(User $user){
+    public function index(User $user, VisibilityService $visibilityService){
         return view('profile.bookmarks', [
             'username' => $user->username,
             'bookmarks' => $user->bookmarks,
-            'visibility' => $this->visibilityService->checkVisibility($user, 'bookmarks')
+            'visibility' => $visibilityService->checkVisibility($user, 'bookmarks')
         ]);
     }
 

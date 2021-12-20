@@ -26,7 +26,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'username' => ['required', Rule::unique('users', 'username')->ignore($this->user->id)],
+            'username' => ['required', Rule::unique('users', 'username')->ignore($this->route('user'))],
             'email' => "email|required",
             'password' => 'sometimes',
             'image' => 'sometimes'
