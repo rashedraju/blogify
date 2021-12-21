@@ -30,7 +30,7 @@ class NewPostNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -47,6 +47,14 @@ class NewPostNotification extends Notification
             'link' => url("/") . '/posts/' . $this->post->slug
         ];
         return (new MailMessage)->markdown('mail.new-post', ['details' => $details]);
+    }
+
+    public function toDatabase($notifiable){
+        return [
+            'heading' => ucfirst($this->post->author->name) . " created new Post",
+            'title' => $this->post->title,
+            'link' => url("/posts/{$this->post->slug}"),
+        ];
     }
 
     /**

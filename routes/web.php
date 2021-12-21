@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\BookmarksController;
 use App\Http\Controllers\FollowingsController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\VisibilityController;
 use App\Http\Controllers\PostCommentsController;
 
@@ -47,6 +48,9 @@ Route::middleware('can:self')->group(function(){
     // Bookmarks
     Route::post('/{user:username}/bookmarks', [BookmarksController::class, 'create']);
     Route::delete('/{user:username}/bookmarks/{bookmark}', [BookmarksController::class, 'destory']);
+
+    // Notification
+    Route::delete('/{user:username}/notifications', [NotificationsController::class, 'destory']);
 });
 
 // Authenticated User

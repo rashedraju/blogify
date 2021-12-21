@@ -12,7 +12,9 @@
         </svg>
     </button>
 
-    <ul x-show="open" class="shadow py-2 absolute bg-gray-100 mt-2 rounded-xl w-full z-50" style="display: none">
+    <ul x-show="open"
+        {{ $attributes->merge(['class' => 'shadow py-2 absolute bg-gray-100 mt-2 rounded-xl w-full z-50']) }}
+        style="display: none">
         {{ $slot }}
     </ul>
 </div>

@@ -7,6 +7,7 @@ use App\Services\Newsletter;
 use App\Services\PostService;
 use App\Services\VisibilityService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use MailchimpMarketing\ApiClient;
 
