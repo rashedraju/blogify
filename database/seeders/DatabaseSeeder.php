@@ -32,22 +32,12 @@ class DatabaseSeeder extends Seeder {
         Post::factory( 3 )->create( [
             "user_id" => $john->id
         ] );
-<<<<<<< HEAD
 
         Status::factory()->create( ['name' => 'draft', 'slug' => 'draft'] );
         Status::factory()->create( ['name' => 'published', 'slug' => 'published'] );
 
         $john->followers()->attach( User::factory( 5 )->create() );
         $jane->followings()->attach( User::factory( 5 )->create() );
-=======
-
-        Status::factory()->create( ['name' => 'draft', 'slug' => 'draft'] );
-        Status::factory()->create( ['name' => 'published', 'slug' => 'published'] );
-
-        $john->followers()->attach( User::factory( 5 )->create() );
-        $jane->followings()->attach( User::factory( 5 )->create() );
-
->>>>>>> blogify
     }
 
 }
