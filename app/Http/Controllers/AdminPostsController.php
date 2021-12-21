@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AdminPostRequest;
 use App\Models\Post;
+use App\Models\User;
+use App\Http\Requests\AdminPostRequest;
 
 class AdminPostsController extends Controller
 {
@@ -69,6 +70,6 @@ class AdminPostsController extends Controller
     {
         $post->delete();
 
-        return redirect()->back()->with('success', 'Post updated');
+        return redirect()->back()->with('success', 'Post Deleted');
     }
 }

@@ -1,6 +1,6 @@
 <header class="mx-auto mt-20 text-center mb-20">
     <h1 class="text-4xl mb-5">
-        <span class="text-blue-500">Laracasts-blog</span> <span>Latest Laravel News</span>
+        <span class="text-blue-500">Blogify</span> <span>Latest Laravel News</span>
     </h1>
 
     <div class="space-y-2 lg:space-y-0 lg:space-x-4 mt-4">

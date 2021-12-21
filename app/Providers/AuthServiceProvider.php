@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Policies\PostPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -49,5 +50,6 @@ class AuthServiceProvider extends ServiceProvider
         Blade::if('self', function(){
             return auth()->user() && auth()->user()->username == request()->segment(1);
         });
+
     }
 }
