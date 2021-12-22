@@ -9,11 +9,14 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\AdminPostsController;
 use App\Http\Controllers\BookmarksController;
+use App\Http\Controllers\CampaignsController;
 use App\Http\Controllers\FollowingsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\VisibilityController;
 use App\Http\Controllers\PostCommentsController;
+use App\Http\Controllers\SendCampaignController;
+use App\Http\Controllers\TemplatesController;
 
 // Post
 Route::get('/', [PostController::class, 'index'])->name('home');
@@ -74,6 +77,10 @@ Route::middleware('guest')->group(function(){
 Route::middleware('admin')->group(function(){
 
     Route::resource('/admin/posts', AdminPostsController::class, ['as' => 'admin'])->except('show');
+
+    Route::resource('/admin/newsletters/campaigns', CampaignsController::class)->only(['index', 'show', 'destroy']);
+
+    Route::post('/admin/newsletters/campaigns/{id}/send', SendCampaignController::class);
 
 });
 

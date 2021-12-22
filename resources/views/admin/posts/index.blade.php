@@ -1,4 +1,5 @@
 <x-dashboard.admin>
+    <h3 class="text-4xl font-semibold mb-5">All Posts</h3>
     <table class="min-w-full divide-y divide-gray-200">
         <thead>
             <th>Title</th>
