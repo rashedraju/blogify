@@ -25,7 +25,7 @@ class Post extends Model {
 
     public function scopeFilter( $query, array $filters ) {
 
-        $query->when( $filters['status'] ?? false, fn( Builder $query, $status ) => $query->whereHas('status', fn($query) => $query->where('slug', $status)));
+        $query->when( $filters['status'] ?? false, fn( Builder $query, $status ) => $query->whereHas( 'status', fn( $query ) => $query->where( 'slug', $status ) ) );
 
         $query->when( $filters['search'] ?? false, fn( $query, $search ) => $query->whereHas( fn( $query ) => $query
                 ->where( 'title', 'like', '%' . $search . '%' )
@@ -35,13 +35,13 @@ class Post extends Model {
 
         $query->when( $filters['categories'] ?? false, fn( $query, $category ) => $query
                 ->whereHas( 'category', fn( $query ) => $query
-                    ->where( 'slug', $category )
+                        ->where( 'slug', $category )
                 )
         );
 
         $query->when( $filters['author'] ?? false, fn( $query, $author ) => $query
                 ->whereHas( 'author', fn( $query ) => $query
-                    ->where( 'username', $author )
+                        ->where( 'username', $author )
                 )
         );
     }
@@ -58,7 +58,7 @@ class Post extends Model {
         return $this->hasMany( Comment::class );
     }
 
-    public function status(){
-        return $this->belongsTo(Status::class);
+    public function status() {
+        return $this->belongsTo( Status::class );
     }
 }
