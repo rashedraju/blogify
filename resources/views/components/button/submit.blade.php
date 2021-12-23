@@ -1,6 +1,7 @@
+@props(['background' => 'bg-blue-500 hover:bg-blue-600'])
 <button type="submit"
     {{ $attributes->merge([
-        'class' => 'bg-blue-500 px-8 py-2 my-5 text-white hover:bg-blue-600 rounded-xl',
+        'class' => "px-8 py-2 my-5 text-white rounded-xl $background",
     ]) }}>
     {{ $slot }}
 </button>

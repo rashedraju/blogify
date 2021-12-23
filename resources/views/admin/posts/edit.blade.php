@@ -1,4 +1,5 @@
 <x-dashboard.admin>
+    <h3 class="text-4xl font-semibold mb-5">{{ $post->title }}</h3>
     <form action="/admin/posts/{{ $post->id }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('patch')

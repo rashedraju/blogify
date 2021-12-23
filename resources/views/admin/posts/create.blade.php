@@ -1,4 +1,5 @@
 <x-dashboard.admin>
+    <h3 class="text-4xl font-semibold mb-5">Create New Post</h3>
     <form action="/admin/posts" method="post" enctype="multipart/form-data">
         @csrf
 

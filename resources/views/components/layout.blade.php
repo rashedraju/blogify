@@ -120,5 +120,9 @@
         <div x-data="{show: true}" x-init="setTimeout(() => show = false, 4000)" x-show="show">
             <p class="bg-blue-500 bottom-2 fixed p-1 px-3 right-2 rounded-md text-white">{{ session('success') }}</p>
         </div>
+    @elseif (session()->has('failed'))
+        <div x-data="{show: true}" x-init="setTimeout(() => show = false, 4000)" x-show="show">
+            <p class="bg-red-500 bottom-2 fixed p-1 px-3 right-2 rounded-md text-white">{{ session('failed') }}</p>
+        </div>
     @endif
 </body>
