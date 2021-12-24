@@ -34,7 +34,10 @@ return [
         'key' => env('MAILCHIMP_KEY'),
         'lists' => [
             'subscribers' => env('MAILCHIMP_LISTS_SUBSCRIBERS')
-        ]
+        ],
+        'templates' => [
+            'blogify' => env('MAILCHIMP_BLOGIFY_TEMPLATE')
+        ],
     ]
 
 ];
